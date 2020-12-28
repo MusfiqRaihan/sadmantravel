@@ -39,48 +39,65 @@ $_SESSION['lpackage_key']= 0;
 
 <?php include '../includes/adminheader.php' ?>
 
-<div class="container py-5">
+<div class="container pt-5 pb-4">
   <div class="row">
+    <div class="col-md-6 offset-3" style="opacity:0.9">
+      <h5 class="text-center mb-3">User Registration by Admin</h5>
 
-    <div class="col-md-12">
-        <h4 class="text-center mb-4">Registered Users List</h4>
-        <div class="text-right">
-          <a href="http://localhost/travel/admin/register.php" class="btn btn-primary btn-sm mb-2 mr-5">Add User</a>
+      <form action="" method="post" id="" name="signup" onsubmit="return checkpass();">
+        <p style="font-size:16px; color:red" align="center">
+
+    <?php
+    if(isset($_POST['submit']))
+    {
+      $fullname=$_POST['fullname'];
+      $mobilenumber=$_POST['mobilenumber'];
+      $email=$_POST['email'];
+      $password=md5($_POST['password']);
+
+      $ret=mysqli_query($con, "select email from user where email='$email' ");
+      $result=mysqli_fetch_array($ret);
+      if($result>0){
+        $msg="This email  associated with another account";
+      }
+      else{
+      $query=mysqli_query($con, "insert into user(fullname, mobilenumber, email,  password)
+       value('$fullname', '$mobilenumber', '$email', '$password')");
+      if ($query) {
+          $msg="You have successfully registered";
+    }
+    else
+      {
+        $msg="Something Went Wrong. Please try again!";
+      }
+    }
+    echo $msg;
+
+    }
+    ?>
+        </p>
+
+        <div class="form-group">
+            <input class="form-control" placeholder="Full Name" name="fullname" type="text" required="true">
         </div>
-        <table class="table">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">Full Name</th>
-                <th scope="col">Email</th>
-                <th scope="col">Mobile</th>
-                <th scope="col">User Type</th>
-                <th scope="col">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <?php
-              $sql = "SELECT * from user ORDER BY id DESC";
-              $result = $con -> query($sql);
+        <div class="form-group">
+          <input class="form-control" placeholder="E-mail" name="email" type="email" required="true">
+        </div>
+        <div class="form-group">
+          <input type="integer" class="form-control" id="mobilenumber" name="mobilenumber" placeholder="Mobile Number e.g. 1729458458" maxlength="10" pattern="[0-9]{10}" required="true">
+        </div>
+        <div class="form-group">
+          <input class="form-control" placeholder="Password" name="password" type="password" value="" required="true" min="8">
+        </div>
+        <div class="form-group">
+          <input type="password" class="form-control" id="repeatpassword" name="repeatpassword" placeholder="Repeat Password" required="true">
+        </div>
+        <div class="text-center">
+          <button type="submit" value="submit" name="submit" class="btn btn-success btn-style">Register</button>
+          <a href="http://localhost/travel/admin/admin.php" class="btn btn-danger btn-style ml-2">Cancel</a>
+        </div>
+      </form>
 
-          if ($result -> num_rows > 0){
-              while ($row = $result -> fetch_assoc()){ ?>
-              <tr>
-                <th scope="row"><?php echo $row["id"]; ?></th>
-                <td><?php echo $row["fullname"]; ?></td>
-                <td><?php echo $row["email"]; ?></td>
-                <td><?php echo $row["mobilenumber"]; ?></td>
-                <td><?php echo $row["userType"]; ?></td>
-                <td>
-                  <a href="http://localhost/travel/admin/edituser.php?id=<?php echo $row["id"]; ?>" class="btn btn-info btn-sm">Edit</a>
-                  <a href="http://localhost/travel/admin/deleteuser.php?id=<?php echo $row["id"]; ?>" class="btn btn-danger btn-sm">Delete</a>
-
-                </td>
-              </tr>
-            <?php } ?>
-        <?php } ?>
-            </tbody>
-          </table>
     </div>
 
   </div>
@@ -106,7 +123,7 @@ $_SESSION['lpackage_key']= 0;
     <script src="../assets/js/slick.min.js"></script>
     <script src="../assets/js/SmoothScroll.js"></script>
     <script src="../assets/js/script.js"></script>
-
+    <script src="../assets/js/scripts.js"></script>
 
 </body>
 

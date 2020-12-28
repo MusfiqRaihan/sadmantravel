@@ -42,39 +42,28 @@ $_SESSION['lpackage_key']= 0;
 <div class="container py-5">
   <div class="row">
 
-    <div class="col-md-12">
-        <h4 class="text-center mb-4">Registered Users List</h4>
-        <div class="text-right">
-          <a href="http://localhost/travel/admin/register.php" class="btn btn-primary btn-sm mb-2 mr-5">Add User</a>
-        </div>
+    <div class="col-md-6 offset-3">
+        <h4 class="text-center mb-4">Subscribers List</h4>
         <table class="table">
             <thead>
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">Full Name</th>
                 <th scope="col">Email</th>
-                <th scope="col">Mobile</th>
-                <th scope="col">User Type</th>
                 <th scope="col">Action</th>
               </tr>
             </thead>
             <tbody>
               <?php
-              $sql = "SELECT * from user ORDER BY id DESC";
+              $sql = "SELECT * from subscribe";
               $result = $con -> query($sql);
 
           if ($result -> num_rows > 0){
               while ($row = $result -> fetch_assoc()){ ?>
               <tr>
                 <th scope="row"><?php echo $row["id"]; ?></th>
-                <td><?php echo $row["fullname"]; ?></td>
                 <td><?php echo $row["email"]; ?></td>
-                <td><?php echo $row["mobilenumber"]; ?></td>
-                <td><?php echo $row["userType"]; ?></td>
                 <td>
-                  <a href="http://localhost/travel/admin/edituser.php?id=<?php echo $row["id"]; ?>" class="btn btn-info btn-sm">Edit</a>
-                  <a href="http://localhost/travel/admin/deleteuser.php?id=<?php echo $row["id"]; ?>" class="btn btn-danger btn-sm">Delete</a>
-
+                  <a href="http://localhost/travel/admin/deletesubscribe.php?id=<?php echo $row["id"]; ?>" class="btn btn-danger btn-sm">Delete</a>
                 </td>
               </tr>
             <?php } ?>
@@ -86,7 +75,7 @@ $_SESSION['lpackage_key']= 0;
   </div>
 </div>
 
-
+<br /><br /><br /><br /><br /><br /><br /><br />
 
 <?php include '../includes/footer.php'; ?>
 

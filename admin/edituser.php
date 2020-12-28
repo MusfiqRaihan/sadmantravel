@@ -11,7 +11,9 @@ $_SESSION['lpackage_key']= 0;
 ?>
 
 <?php if (isset($_SESSION['adminid']) && $_SESSION['adminid'] != 0){
-
+  $id = $_REQUEST['id'];
+  $query = mysqli_query($con, "SELECT fullname,email,mobilenumber FROM user where id='$id'");
+  $edit = mysqli_fetch_array($query);
    ?>
 
    <!DOCTYPE html>
@@ -39,50 +41,56 @@ $_SESSION['lpackage_key']= 0;
 
 <?php include '../includes/adminheader.php' ?>
 
-<div class="container py-5">
+<div class="container pt-5 pb-4">
   <div class="row">
+    <div class="col-md-6 offset-3" style="opacity:0.9">
+      <h5 class="text-center mb-3">Edit User by Admin</h5>
 
-    <div class="col-md-12">
-        <h4 class="text-center mb-4">Registered Users List</h4>
-        <div class="text-right">
-          <a href="http://localhost/travel/admin/register.php" class="btn btn-primary btn-sm mb-2 mr-5">Add User</a>
+      <form action="" method="post" id="">
+        <p style="font-size:16px; color:red" align="center">
+
+  <?php
+  if(isset($_POST['submit']))
+    {
+      $fullname=$_POST['fullname'];
+      $email=$_POST['email'];
+      $mobilenumber=$_POST['mobilenumber'];
+      $id = $_REQUEST['id'];
+      $query=mysqli_query($con, "UPDATE user SET fullname='$fullname', mobilenumber='$mobilenumber', email='$email' WHERE id='$id'");
+      if ($query) {
+          $msg="You have successfully Updated"; ?>
+
+          <script type="text/javascript">
+            window.location = "http://localhost/travel/admin/admin.php";
+            </script>
+
+  <?php  }
+    else
+      {
+        $msg="Something Went Wrong. Please try again!";
+      }
+    echo $msg;
+
+  }
+?>
+        </p>
+
+        <div class="form-group">
+            <input class="form-control" placeholder="Full Name" name="fullname" type="text" value="<?php echo $edit['fullname'] ?>">
         </div>
-        <table class="table">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">Full Name</th>
-                <th scope="col">Email</th>
-                <th scope="col">Mobile</th>
-                <th scope="col">User Type</th>
-                <th scope="col">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <?php
-              $sql = "SELECT * from user ORDER BY id DESC";
-              $result = $con -> query($sql);
+        <div class="form-group">
+          <input class="form-control" placeholder="E-mail" name="email" type="email" value="<?php echo $edit['email'] ?>">
+        </div>
+        <div class="form-group">
+          <input type="integer" class="form-control" name="mobilenumber" placeholder="Mobile Number e.g. 1729458458" maxlength="10" pattern="[0-9]{10}" value="<?php echo $edit['mobilenumber'] ?>">
+        </div>
+        <div class="text-center">
+          <button type="submit" value="submit" name="submit" class="btn btn-success btn-style">Update</button>
+          <a href="http://localhost/travel/view/dashboard.php" class="btn btn-danger ml-2 btn-style">Cancel</a>
+        </div>
+      </form>
 
-          if ($result -> num_rows > 0){
-              while ($row = $result -> fetch_assoc()){ ?>
-              <tr>
-                <th scope="row"><?php echo $row["id"]; ?></th>
-                <td><?php echo $row["fullname"]; ?></td>
-                <td><?php echo $row["email"]; ?></td>
-                <td><?php echo $row["mobilenumber"]; ?></td>
-                <td><?php echo $row["userType"]; ?></td>
-                <td>
-                  <a href="http://localhost/travel/admin/edituser.php?id=<?php echo $row["id"]; ?>" class="btn btn-info btn-sm">Edit</a>
-                  <a href="http://localhost/travel/admin/deleteuser.php?id=<?php echo $row["id"]; ?>" class="btn btn-danger btn-sm">Delete</a>
-
-                </td>
-              </tr>
-            <?php } ?>
-        <?php } ?>
-            </tbody>
-          </table>
     </div>
-
   </div>
 </div>
 

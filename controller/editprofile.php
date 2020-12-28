@@ -48,7 +48,7 @@ include('../models/dbconnection.php');
   <div class="row py-5">
     <div class="col-md-6 offset-3">
 
-      <form action="" method="post" id="" name="signup" onsubmit="return checkpass();">
+      <form action="" method="post" id="" name="signup">
         <p style="font-size:16px; color:red" align="center">
 
   <?php
